@@ -3,7 +3,6 @@
     <div class="column justify-center text-h6 text-bold">
       <h3>REGISTER</h3>
       <h6>--- Welcome to BookStore ---</h6>
-
     </div>
     <q-form @submit.prevent="onSubmit" @reset.prevent="onReset" class="q-mt-sm">
       <div>

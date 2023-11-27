@@ -1,78 +1,80 @@
 <template>
-<q-card>
-    <div class="q-pa-md">
-      <div class="text-subtitle2 text-bold row justify-between">
-        <div>{{ menuName }}</div>
-        <div>{{ menuPrice }} Bath</div>
-      </div>
-      <div class="text-grey q-pt-md">
-        Catagory: <span class="text-black">{{ menuCategory }}</span>
-      </div>
-      <div class="text-grey q-pt-md">
-        Sold out: <span class="text-black">{{ menuSold }}</span>
-      </div>
-      <div class="text-grey q-pt-md">
-        detail:
-        <span class="text-black">{{ menuDetail }}</span>
-      </div>
-      <div class="row justify-end">
-        <q-icon name="add" size="20px" color="orange-9" @click="addMenuBuy()" />
-        <div class="q-mx-sm text-bold">{{ menuBuy }}</div>
-        <q-icon
-          name="remove"
-          size="20px"
-          color="orange-9"
-          @click="removeMenuBuy()"
-        />
-      </div>
-      <div align="center" class="q-pt-md" v-if="menuBuy > 0">
-        <q-btn
-          color="green-2"
-          label="Confirm"
-          text-color="green"
-          style="border-radius: 15px"
-          no-caps
-          class="q-mr-sm"
-          @click="confirmOrder()"
-        />
-        <q-btn
-          color="red-2"
-          label="Cancel"
-          text-color="red"
-          style="border-radius: 15px"
-          no-caps
-          @click="canCelOrder"
-        />
-      </div>
-    </div>
-  </q-card>
+  <q-dialog v-model="dialogVisible" persistent>
+    <q-card>
+      <q-card-section class="q-pt-md">
+        <q-input v-model="bookTitle" label="Book Title" />
+        <q-input v-model="languageId" label="Language ID" />
+        <q-input v-model="publicationDate" label="Publication Date" type="date" />
+        <q-input v-model="author" label="Author" />
+        <q-input v-model="price" label="Price" type="number" />
+        <q-input v-model="edition" label="Edition" />
+        <q-input v-model="stock" label="Stock" type="number" />
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn label="Close" color="black" @click="closeDialog" />
+        <q-btn label="Save" color="brown" @click="saveBook" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, ref, watch } from 'vue';
 
 export default defineComponent({
   name: 'BookCard',
   props: {
-    title: {
-      type: String,
-      required: true
-    },
+    isDialogVisible: Boolean,
+  },
+  emits: ['closeDialog', 'saveBook'],
+  setup(props, { emit }) {
+    const dialogVisible = ref(false);
+    const bookTitle = ref('');
+    const languageId = ref('');
+    const publicationDate = ref('');
+    const author = ref('');
+    const price = ref(0);
+    const edition = ref('');
+    const stock = ref(0);
 
-    caption: {
-      type: String,
-      default: ''
-    },
+    watch(() => props.isDialogVisible, (newValue) => {
+      dialogVisible.value = newValue;
+    });
 
-    link: {
-      type: String,
-      default: '#'
-    },
+    // ... rest of the code ...
 
-    icon: {
-      type: String,
-      default: ''
-    }
-  }
-})
+    const closeDialog = () => {
+      resetFormValues();
+      emit('closeDialog');
+    };
+
+    const saveBook = () => {
+      const newBook = {
+        title: bookTitle.value,
+        languageId: languageId.value,
+        publicationDate: publicationDate.value,
+        author: author.value,
+        price: price.value,
+        edition: edition.value,
+        stock: stock.value,
+      };
+
+      emit('saveBook', newBook);
+      closeDialog();
+    };
+
+    const resetFormValues = () => {
+      bookTitle.value = '';
+      languageId.value = '';
+      publicationDate.value = '';
+      author.value = '';
+      price.value = 0;
+      edition.value = '';
+      stock.value = 0;
+    };
+
+    return { dialogVisible, bookTitle, languageId, publicationDate, author, price, edition, stock, closeDialog, saveBook };
+  },
+});
 </script>
