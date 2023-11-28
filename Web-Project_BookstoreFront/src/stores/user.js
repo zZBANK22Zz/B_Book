@@ -1,34 +1,54 @@
 import { defineStore } from "pinia";
 import { useStorage } from "@vueuse/core";
 
-// Define the Pinia store
-export const useStorageStore = defineStore("loginuser", {
-  state: () => ({
-    firstName: useStorage("firstName",""),
-    lastName: useStorage("lastName",""),
-    email: useStorage("email",""),
-    isPwd: useStorage("isPwd",""),
-    password: useStorage("password",""),
-    dateOfBirth: useStorage("dateOfBirth",""),
-    address: useStorage("address",""),
-    phoneNumber: useStorage("phoneNumber",""),
-    role: 2,
+export const useLoginUserStore = defineStore("loginuser", {
+  state: ()=>({
+    userid: useStorage("userid", ""),
+    gmail:  useStorage("email", ""),
   }),
-  mutations: {
-    setFirstName(state, value) {
-      state.firstName = value;
+  getters: {
+    getEmail: (state)=>{
+      return state.email;
     },
-    setLastName(state, value) {
-      state.lastName = value;
+    getUserid: (state)=>{
+      return state.accessToken;
     },
- 
   },
   actions: {
-    updateFirstName({ commit }, value) {
-      commit('setFirstName', value);
-    },
-    updateLastName({ commit }, value) {
-      commit('setLastName', value);
-    },
-  },
+    clearStorage() {
+      this.userid= "";
+      this.email = "";
+    }
+  }
 });
+
+// export const useStorageStore = defineStore("loginuser", {
+//   state: () => ({
+//     firstName: useStorage("firstName",""),
+//     lastName: useStorage("lastName",""),
+//     email: useStorage("email",""),
+//     isPwd: useStorage("isPwd",""),
+//     password: useStorage("password",""),
+//     dateOfBirth: useStorage("dateOfBirth",""),
+//     address: useStorage("address",""),
+//     phoneNumber: useStorage("phoneNumber",""),
+//     role: 2,
+//   }),
+//   mutations: {
+//     setFirstName(state, value) {
+//       state.firstName = value;
+//     },
+//     setLastName(state, value) {
+//       state.lastName = value;
+//     },
+
+//   },
+//   actions: {
+//     updateFirstName({ commit }, value) {
+//       commit('setFirstName', value);
+//     },
+//     updateLastName({ commit }, value) {
+//       commit('setLastName', value);
+//     },
+//   },
+// });

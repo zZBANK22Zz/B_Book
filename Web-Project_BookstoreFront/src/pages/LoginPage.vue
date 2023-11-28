@@ -5,12 +5,14 @@
       <h6>--- Welcome to BookStore ---</h6>
     </div>
     <q-form
-      @submit.prevent="loginUser"
-      @reset.prevent="onReset"
+      @submit.prevent="onSubmit"
       class="q-gutter-sm"
     >
       <div>
-        <q-input filled v-model="username" type="text" label="Your username" />
+        <q-input
+        filled v-model="email"
+        type="text"
+        label="Your email" />
       </div>
       <div>
         <q-input
@@ -35,40 +37,38 @@
 </template>
 
 <script>
-import { useStorageStore } from "../stores/user";
 import { defineComponent } from "vue";
+import { useLoginUserStore } from "../stores/user";
 
 export default defineComponent({
   name: "LoginPage",
-  data() {
-    
-      
-    return {
-      userStore: useStorageStore(),
-      username: "",
-      password: "",
-      user: {},
-    };
+  data(){
+    return{
+      userStore: useLoginUserStore(),
+      isPwd: true,
+      password: null,
+      email: null,
+    }
   },
   methods: {
-    async loginUser() {
-      try {
-        const userLogin = {
-          username: this.username,
-          password: this.password,
-        };
-        const res = await api.post("/user/signin", userLogin);
-        console.log("Login successfuly:", res.data);
-
-        this.userStore.user = res.data;
-        this.$router.push("/menu");
-      } catch (error) {
-        console.log(error);
+    onSubmit(){
+      const data = {
+        email: this.email,
+        password:this.password
       }
-    },
-    onReset() {
-      this.username = "";
-      this.password = "";
+      this.$api
+      .post("/user/signin", data)
+      .then((res)=>{
+        if(res.status == 200){
+          console.log("Login successfully")
+          this.userStore.userid = res.data.id;
+          this.userStore.email = res.data.email;
+          this.$router.push("/user");
+        }
+      })
+      .catch((err)=>{
+          console.log(err);
+        });
     },
   },
 });

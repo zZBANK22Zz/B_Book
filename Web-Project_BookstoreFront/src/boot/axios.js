@@ -10,12 +10,20 @@ import { useUserStore } from '../stores/user'
 // for each client)
 // const api = axios.create({ baseURL: 'http://localhost:3000/api' })
 
-const RESTAPI = "http://localhost:3000/api/";
+const RESTAPI = "http://localhost:3000/api";
 const api = axios.create({
   baseURL: RESTAPI,
   headers: { "Content-Type": "application/json" },
   timeout: 5000,
 });
+export function useApi(baseUrl) {
+  const instance = axios.create({
+    baseURL: baseUrl,
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 5000,
+  });
+  return instance;
+}
 
 // api.interceptors.request.use((config) => {
 //   const userStore = useUserStore();
