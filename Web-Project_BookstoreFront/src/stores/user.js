@@ -4,14 +4,14 @@ import { useStorage } from "@vueuse/core";
 export const useLoginUserStore = defineStore("loginuser", {
   state: ()=>({
     userid: useStorage("userid", ""),
-    gmail:  useStorage("email", ""),
+    email:  useStorage("email", ""),
   }),
   getters: {
     getEmail: (state)=>{
       return state.email;
     },
     getUserid: (state)=>{
-      return state.accessToken;
+      return state.userid;
     },
   },
   actions: {

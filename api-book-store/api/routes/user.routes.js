@@ -9,7 +9,7 @@ router.get('/id/:id', controller.getById)
 
 router.get('/email/:email', controller.getByEmail)
 
-router.get('/signin', controller.signin)
+router.post('/signin', controller.signin)
 
 router.post('/create', controller.create)
 

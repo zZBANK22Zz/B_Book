@@ -95,59 +95,34 @@
 </template>
 
 <script>
-import router from "../stores/user";
 import { defineComponent } from "vue";
-import { Notify } from "quasar";
 import { emailValidate, requiredValidate } from "../utils/validations";
 
 export default defineComponent({
-  name: "ReqisterPage",
+  name: "RegisterPage",
   data() {
     return {
-      firstName: null,
-      lastName: null,
-      email: null,
-      isPwd: true,
-      password: null,
-      dateOfBirth: null,
-      address: null,
-      phoneNumber: null,
-      role: 2
+      // ... (your existing data properties)
     };
   },
   methods: {
-    emailValidate,
-    requiredValidate,
+    // ... (your existing methods)
+
     onSubmit() {
       const newUser = {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        email: this.email,
-        password: this.password,
-        dateOfBirth: this.dateOfBirth,
-        address: this.address,
-        phoneNumber: this.phoneNumber,
-        role: this.role
+        // ... (your existing user data properties)
       };
-      this.$api.post("/user/create", newUser)
+
+      this.$api
+        .post("/user/create", newUser)
         .then((res) => {
           console.log(res);
-          this.$router.push("/");
+          this.$router.push("/login");
         })
         .catch((err) => {
           console.log(err);
-          err;
+          alert("Error creating the user. Please try again.");
         });
-    },
-    onReset() {
-      (this.firstName= null),
-      (this.lastName= null),
-      (this.email= null),
-      (this.isPwd= true),
-      (this.password= null),
-      (this.dateOfBirth= null),
-      (this.address= null),
-      (this. phoneNumber= null)
     },
   },
 });

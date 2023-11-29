@@ -16,14 +16,14 @@ const api = axios.create({
   headers: { "Content-Type": "application/json" },
   timeout: 5000,
 });
-export function useApi(baseUrl) {
-  const instance = axios.create({
-    baseURL: baseUrl,
-    headers: { 'Content-Type': 'application/json' },
-    timeout: 5000,
-  });
-  return instance;
-}
+// export function useApi(baseUrl) {
+//   const instance = axios.create({
+//     baseURL: baseUrl,
+//     headers: { 'Content-Type': 'application/json' },
+//     timeout: 5000,
+//   });
+//   return instance;
+// }
 
 // api.interceptors.request.use((config) => {
 //   const userStore = useUserStore();

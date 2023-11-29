@@ -21,10 +21,12 @@
 </template>
 
 <script>
+import { useLoginUserStore } from "../stores/user"
 
 export default {
   data() {
     return {
+      userLogin: useLoginUserStore(),
       reviews: [],
       newReview: '',
     };
@@ -40,9 +42,10 @@ export default {
     }
 },
     async submitReview() {
-    const bookId = 1;
-    const userId = 1;
 
+    const bookId = 1;
+    const userId = this.userLogin.userid;
+      console.log("user",userId)
     if (!this.newReview) {
         return;
     }
@@ -54,9 +57,9 @@ export default {
             content: this.newReview,
         });
 
-        console.log('Server response:', response.data);
+        console.log('Server response:', JSON.stringify(response.data));
 
-        if (response.data.success) {
+        if (response.data.status) {
           this.newReview = '';
           this.fetchReviews();
         } else {
@@ -64,7 +67,17 @@ export default {
         }
       } catch (error) {
         console.error('Error submitting review:', error);
-        alert('An error occurred. Please try again.');
+        if (error.response) {
+
+      console.error('Server responded with:', error.response.data);
+    } else if (error.request) {
+
+      console.error('No response received from the server.');
+    } else {
+
+      console.error('Error setting up the request:', error.message);
+    }
+
   }
     },
       },
